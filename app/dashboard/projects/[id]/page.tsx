@@ -8,9 +8,10 @@ import { getStatusColor, getStatusLabel, formatDate } from '@/lib/utils'
 import { Project } from '@/lib/types'
 import SiteInfoTab from '@/components/site-info/SiteInfoTab'
 import BNBCTab     from '@/components/bnbc/BNBCTab'
+import BuildingTab from '@/components/building/BuildingTab'
 import {
   ArrowLeft, MapPin, User, Calendar, Hash,
-  Layers, FileText, Building2, Trash2, Loader2,
+  Layers, FileText, Building2, Trash2, Loader2, Edit2,
 } from 'lucide-react'
 
 const tabs = [
@@ -121,13 +122,19 @@ export default function ProjectDetailPage() {
             </div>
           </div>
 
-          {/* Delete button */}
-          <button onClick={handleDelete} disabled={deleting}
-            className="flex-shrink-0 bg-white/10 hover:bg-red-500/80 text-white rounded-xl p-2.5 transition-all">
-            {deleting
-              ? <Loader2 size={18} className="animate-spin" />
-              : <Trash2 size={18} />}
-          </button>
+          {/* Edit + Delete buttons */}
+          <div className="flex gap-2 flex-shrink-0">
+            <Link href={`/dashboard/projects/${project.id}/edit`}
+              className="bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all">
+              <Edit2 size={18} />
+            </Link>
+            <button onClick={handleDelete} disabled={deleting}
+              className="bg-white/10 hover:bg-red-500/80 text-white rounded-xl p-2.5 transition-all">
+              {deleting
+                ? <Loader2 size={18} className="animate-spin" />
+                : <Trash2 size={18} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -158,8 +165,13 @@ export default function ProjectDetailPage() {
         <BNBCTab projectId={project.id} />
       )}
 
-      {/* Remaining tabs — coming soon */}
-      {['building', 'docs'].map(tabId => (
+      {/* Building — Phase 5 ✅ */}
+      {activeTab === 'building' && (
+        <BuildingTab projectId={project.id} />
+      )}
+
+      {/* Remaining — coming soon */}
+      {['docs'].map(tabId => (
         activeTab === tabId && (
           <div key={tabId} className="card p-12 text-center">
             {(() => {
@@ -176,8 +188,7 @@ export default function ProjectDetailPage() {
                   {tab.phase} এ যোগ হবে
                 </span>
                 <p className="text-gray-500 text-sm max-w-xs mx-auto">
-                  {tabId === 'building' && 'ভবনের ধরন, তলার সংখ্যা, উচ্চতা, ব্যবহারের ধরন'}
-                  {tabId === 'docs'     && 'ড্রইং, রিপোর্ট, BOQ, চুক্তিপত্র, ফটো আপলোড'}
+                  {tabId === 'docs' && 'ড্রইং, রিপোর্ট, BOQ, চুক্তিপত্র, ফটো আপলোড'}
                 </p>
               </>
             })()}
