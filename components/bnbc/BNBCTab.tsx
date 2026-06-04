@@ -53,7 +53,7 @@ export default function BNBCTab({ projectId }: Props) {
         </div>
         <BNBCForm
           initial={bnbc}
-          linkedSoilType={siteInfo?.soilType}
+          linkedSoilType={siteInfo?.soilType as 'S1' | 'S2' | 'S3' | 'S4' | undefined}
           onSave={handleSave}
           onCancel={() => bnbc ? setEditing(false) : null}
           saving={saving}

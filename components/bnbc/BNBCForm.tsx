@@ -10,7 +10,7 @@ import { Save, Loader2, X } from 'lucide-react'
 
 interface Props {
   initial?: BNBCSettings | null
-  linkedSoilType?: string        // from SiteInfo
+  linkedSoilType?: 'S1' | 'S2' | 'S3' | 'S4'  // from SiteInfo
   onSave:   (data: BNBCFormData) => Promise<boolean>
   onCancel: () => void
   saving:   boolean
