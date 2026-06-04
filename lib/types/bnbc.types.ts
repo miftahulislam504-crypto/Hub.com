@@ -35,7 +35,7 @@ export interface BNBCSettings {
 
 export type BNBCFormData = Omit<BNBCSettings, 'id' | 'projectId' | 'createdAt' | 'updatedAt'
   | 'seismicZoneCoeff' | 'importanceFactor' | 'basicWindSpeed' | 'spectralAcceleration'
-  | 'riskCategory'>
+  | 'riskCategory' | 'responseModFactor'>
 
 // ─── Occupancy Types ─────────────────────────────────────────────────────────
 export const OCCUPANCY_TYPES = [
