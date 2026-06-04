@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { useProjectStore } from '@/store/useProjectStore'
 import { getStatusColor, getStatusLabel, formatDate } from '@/lib/utils'
 import { Project } from '@/lib/types'
+import SiteInfoTab from '@/components/site-info/SiteInfoTab'
+import BNBCTab     from '@/components/bnbc/BNBCTab'
 import {
   ArrowLeft, MapPin, User, Calendar, Hash,
   Layers, FileText, Building2, Trash2, Loader2,
@@ -146,25 +148,39 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Tab content — coming soon placeholders */}
-      {tabs.map(tab => (
-        activeTab === tab.id && (
-          <div key={tab.id} className="card p-12 text-center">
-            <div className="bg-primary-50 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-4">
-              <tab.icon size={36} className="text-primary-900" />
-            </div>
-            <h3 className="text-xl font-heading font-bold text-gray-800 mb-2">
-              {tab.label} ইনফরমেশন
-            </h3>
-            <span className="inline-block bg-accent-500/10 text-accent-600 text-sm font-semibold
-              px-4 py-1.5 rounded-full mb-3">
-              {tab.phase} এ যোগ হবে
-            </span>
-            <p className="text-gray-500 text-sm max-w-xs mx-auto">
-              {tab.id === 'site'     && 'মাটির ধরন, প্লট এরিয়া, GPS কো-অর্ডিনেট, রাস্তার প্রশস্ততা'}
-              {tab.id === 'bnbc'     && 'অকুপেন্সি টাইপ, ভূমিকম্প জোন, বায়ু জোন, ইম্পর্ট্যান্স ফ্যাক্টর'}
-              {tab.id === 'building' && 'ভবনের ধরন, তলার সংখ্যা, উচ্চতা, ব্যবহারের ধরন'}
-              {tab.id === 'docs'     && 'ড্রইং, রিপোর্ট, BOQ, চুক্তিপত্র, ফটো আপলোড'}
-            </p>
+      {/* Site Info — Phase 2 ✅ */}
+      {activeTab === 'site' && (
+        <SiteInfoTab projectId={project.id} />
+      )}
+
+      {/* BNBC — Phase 3 ✅ */}
+      {activeTab === 'bnbc' && (
+        <BNBCTab projectId={project.id} />
+      )}
+
+      {/* Remaining tabs — coming soon */}
+      {['building', 'docs'].map(tabId => (
+        activeTab === tabId && (
+          <div key={tabId} className="card p-12 text-center">
+            {(() => {
+              const tab = tabs.find(t => t.id === tabId)!
+              return <>
+                <div className="bg-primary-50 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                  <tab.icon size={36} className="text-primary-900" />
+                </div>
+                <h3 className="text-xl font-heading font-bold text-gray-800 mb-2">
+                  {tab.label} ইনফরমেশন
+                </h3>
+                <span className="inline-block bg-accent-500/10 text-accent-600 text-sm font-semibold
+                  px-4 py-1.5 rounded-full mb-3">
+                  {tab.phase} এ যোগ হবে
+                </span>
+                <p className="text-gray-500 text-sm max-w-xs mx-auto">
+                  {tabId === 'building' && 'ভবনের ধরন, তলার সংখ্যা, উচ্চতা, ব্যবহারের ধরন'}
+                  {tabId === 'docs'     && 'ড্রইং, রিপোর্ট, BOQ, চুক্তিপত্র, ফটো আপলোড'}
+                </p>
+              </>
+            })()}
           </div>
         )
       ))}

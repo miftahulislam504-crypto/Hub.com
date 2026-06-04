@@ -39,3 +39,6 @@ export interface ServiceResult<T> {
   error?: string
   success: boolean
 }
+
+// Re-export for convenience
+export type { BNBCSettings, BNBCFormData } from './types/bnbc.types'
