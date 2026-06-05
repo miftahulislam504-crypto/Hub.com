@@ -6,9 +6,10 @@ import Link from 'next/link'
 import { useProjectStore } from '@/store/useProjectStore'
 import { getStatusColor, getStatusLabel, formatDate } from '@/lib/utils'
 import { Project } from '@/lib/types'
-import SiteInfoTab from '@/components/site-info/SiteInfoTab'
-import BNBCTab     from '@/components/bnbc/BNBCTab'
-import BuildingTab from '@/components/building/BuildingTab'
+import SiteInfoTab   from '@/components/site-info/SiteInfoTab'
+import BNBCTab       from '@/components/bnbc/BNBCTab'
+import BuildingTab   from '@/components/building/BuildingTab'
+import DocumentsTab  from '@/components/documents/DocumentsTab'
 import {
   ArrowLeft, MapPin, User, Calendar, Hash,
   Layers, FileText, Building2, Trash2, Loader2, Edit2,
@@ -170,31 +171,10 @@ export default function ProjectDetailPage() {
         <BuildingTab projectId={project.id} />
       )}
 
-      {/* Remaining — coming soon */}
-      {['docs'].map(tabId => (
-        activeTab === tabId && (
-          <div key={tabId} className="card p-12 text-center">
-            {(() => {
-              const tab = tabs.find(t => t.id === tabId)!
-              return <>
-                <div className="bg-primary-50 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                  <tab.icon size={36} className="text-primary-900" />
-                </div>
-                <h3 className="text-xl font-heading font-bold text-gray-800 mb-2">
-                  {tab.label} ইনফরমেশন
-                </h3>
-                <span className="inline-block bg-accent-500/10 text-accent-600 text-sm font-semibold
-                  px-4 py-1.5 rounded-full mb-3">
-                  {tab.phase} এ যোগ হবে
-                </span>
-                <p className="text-gray-500 text-sm max-w-xs mx-auto">
-                  {tabId === 'docs' && 'ড্রইং, রিপোর্ট, BOQ, চুক্তিপত্র, ফটো আপলোড'}
-                </p>
-              </>
-            })()}
-          </div>
-        )
-      ))}
+      {/* Documents — Phase 7 ✅ */}
+      {activeTab === 'docs' && (
+        <DocumentsTab projectId={project.id} />
+      )}
     </div>
   )
 }
