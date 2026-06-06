@@ -125,11 +125,17 @@ export default function ProjectDetailPage() {
             </div>
           </div>
 
-          {/* Edit + Delete buttons */}
+          {/* Edit + Integration + Delete buttons */}
           <div className="flex gap-2 flex-shrink-0">
             <Link href={`/dashboard/projects/${project.id}/edit`}
-              className="bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all">
+              className="bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all"
+              title="সম্পাদনা">
               <Edit2 size={18} />
+            </Link>
+            <Link href={`/dashboard/projects/${project.id}/integration`}
+              className="bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all"
+              title="Integration Export">
+              <span className="text-base leading-none">🔗</span>
             </Link>
             <button onClick={handleDelete} disabled={deleting}
               className="bg-white/10 hover:bg-red-500/80 text-white rounded-xl p-2.5 transition-all">
