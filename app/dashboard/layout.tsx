@@ -7,13 +7,14 @@ import { useAuthStore } from '@/store/useAuthStore'
 import AuthProvider from '@/components/providers/AuthProvider'
 import {
   LayoutDashboard, FolderOpen, LogOut,
-  Building2, Menu, X, Loader2,
+  Building2, Menu, X, Loader2, Clock,
 } from 'lucide-react'
 import { useState } from 'react'
 
 const navItems = [
   { href: '/dashboard',          icon: LayoutDashboard, label: 'ড্যাশবোর্ড' },
   { href: '/dashboard/projects', icon: FolderOpen,       label: 'প্রজেক্টসমূহ' },
+  { href: '/dashboard/activity', icon: Clock,            label: 'কার্যক্রম' },
 ]
 
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {

@@ -10,9 +10,10 @@ import SiteInfoTab   from '@/components/site-info/SiteInfoTab'
 import BNBCTab       from '@/components/bnbc/BNBCTab'
 import BuildingTab   from '@/components/building/BuildingTab'
 import DocumentsTab  from '@/components/documents/DocumentsTab'
+import ActivityTab   from '@/components/activity/ActivityTab'
 import {
   ArrowLeft, MapPin, User, Calendar, Hash,
-  Layers, FileText, Building2, Trash2, Loader2, Edit2,
+  Layers, FileText, Building2, Trash2, Loader2, Edit2, Clock,
 } from 'lucide-react'
 
 const tabs = [
@@ -20,6 +21,7 @@ const tabs = [
   { id: 'bnbc',     label: 'BNBC',      icon: FileText,   phase: 'Phase 4' },
   { id: 'building', label: 'ভবন',       icon: Building2,  phase: 'Phase 5' },
   { id: 'docs',     label: 'ডকুমেন্ট', icon: Layers,     phase: 'Phase 7' },
+  { id: 'activity', label: 'ইতিহাস',   icon: Clock,      phase: 'Phase 8' },
 ]
 
 export default function ProjectDetailPage() {
@@ -174,6 +176,11 @@ export default function ProjectDetailPage() {
       {/* Documents — Phase 7 ✅ */}
       {activeTab === 'docs' && (
         <DocumentsTab projectId={project.id} />
+      )}
+
+      {/* Activity — Phase 8 ✅ */}
+      {activeTab === 'activity' && (
+        <ActivityTab projectId={project.id} />
       )}
     </div>
   )
