@@ -23,7 +23,7 @@ export default function ActivityTab({ projectId }: Props) {
   const grouped = groupByDate(filtered)
   const dateKeys = Object.keys(grouped)
 
-  const actionTypes = [...new Set(logs.map(l => l.action))]
+  const actionTypes = Array.from(new Set(logs.map(l => l.action)))
 
   return (
     <div>

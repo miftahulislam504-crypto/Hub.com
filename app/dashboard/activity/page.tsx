@@ -42,7 +42,7 @@ export default function ActivityPage() {
 
   const grouped  = groupByDate(logs)
   const dateKeys = Object.keys(grouped)
-  const actionTypes = [...new Set(allLogs.map(l => l.action))]
+  const actionTypes = Array.from(new Set(allLogs.map(l => l.action)))
 
   return (
     <div className="max-w-3xl mx-auto">
