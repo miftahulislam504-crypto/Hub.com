@@ -1,10 +1,11 @@
 // components/shared/Skeletons.tsx
 'use client'
+import React from 'react'
 
 // Base shimmer
-function Shimmer({ className }: { className: string }) {
+function Shimmer({ className, style }: { className: string; style?: React.CSSProperties }) {
   return (
-    <div className={`animate-pulse bg-gray-100 rounded-xl ${className}`} />
+    <div className={`animate-pulse bg-gray-100 rounded-xl ${className}`} style={style} />
   )
 }
 
