@@ -1,29 +1,81 @@
-// firestore.rules.txt
-// Firebase Console → Firestore → Rules → এটা paste করুন → Publish
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Users — নিজের data নিজে পড়বে/লিখবে
-    match /users/{userId} {
-      allow read, write: if request.auth != null
-                         && request.auth.uid == userId;
+    function isAuth() {
+      return request.auth != null;
     }
 
-    // Projects — নিজের project নিজে manage করবে
+    function isProjectOwner(projectId) {
+      return isAuth() &&
+        get(/databases/$(database)/documents/projects/$(projectId))
+          .data.createdBy == request.auth.uid;
+    }
+
+    // ── Users ──────────────────────────────────────────────────────────────
+    match /users/{userId} {
+      allow read, write: if isAuth() && request.auth.uid == userId;
+    }
+
+    // ── Projects ───────────────────────────────────────────────────────────
     match /projects/{projectId} {
-      allow read, write: if request.auth != null
-                         && request.auth.uid == resource.data.createdBy;
+      allow read: if isAuth() &&
+        resource.data.createdBy == request.auth.uid;
 
-      allow create: if request.auth != null
-                    && request.auth.uid == request.resource.data.createdBy;
+      allow create: if isAuth() &&
+        request.resource.data.createdBy == request.auth.uid;
 
-      // Sub-collections — project owner পড়বে/লিখবে
-      match /{subCollection}/{docId} {
-        allow read, write: if request.auth != null
-                           && get(/databases/$(database)/documents/projects/$(projectId)).data.createdBy
-                              == request.auth.uid;
+      allow update, delete: if isAuth() &&
+        resource.data.createdBy == request.auth.uid;
+
+      // ── Sub-collections — Hub writes, other apps read ───────────────────
+
+      match /site_information/{docId} {
+        allow read:  if isProjectOwner(projectId);  // Hub + all apps read
+        allow write: if isProjectOwner(projectId);  // only Hub writes
+      }
+
+      match /bnbc_settings/{docId} {
+        allow read:  if isProjectOwner(projectId);
+        allow write: if isProjectOwner(projectId);
+      }
+
+      match /building_information/{docId} {
+        allow read:  if isProjectOwner(projectId);
+        allow write: if isProjectOwner(projectId);
+      }
+
+      match /documents/{docId} {
+        allow read:  if isProjectOwner(projectId);
+        allow write: if isProjectOwner(projectId);
+      }
+
+      match /activity_logs/{docId} {
+        allow read:  if isProjectOwner(projectId);
+        allow write: if isProjectOwner(projectId);
+      }
+
+      // ── Other apps এর data (Structural, Architectural, BOQ, etc.) ───────
+      // এই sub-collections অন্য apps লিখবে, Hub পড়বে
+
+      match /structural_results/{docId} {
+        allow read, write: if isProjectOwner(projectId);
+      }
+
+      match /architectural_data/{docId} {
+        allow read, write: if isProjectOwner(projectId);
+      }
+
+      match /boq_data/{docId} {
+        allow read, write: if isProjectOwner(projectId);
+      }
+
+      match /project_tracking/{docId} {
+        allow read, write: if isProjectOwner(projectId);
+      }
+
+      match /report_data/{docId} {
+        allow read, write: if isProjectOwner(projectId);
       }
     }
   }
