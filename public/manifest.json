@@ -1,18 +1,25 @@
 {
   "name": "CivilOS Hub",
   "short_name": "CivilOS",
-  "description": "সিভিল ইঞ্জিনিয়ারিং প্রজেক্ট ম্যানেজমেন্ট",
+  "description": "Civil Engineering Project Management",
   "start_url": "/dashboard",
   "display": "standalone",
-  "background_color": "#0D47A1",
+  "background_color": "#ffffff",
   "theme_color": "#0D47A1",
   "orientation": "portrait-primary",
+  "scope": "/",
   "icons": [
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icons/icon-512.png",

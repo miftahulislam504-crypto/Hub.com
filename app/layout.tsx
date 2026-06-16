@@ -1,41 +1,53 @@
 // app/layout.tsx
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import { ToastProvider }     from '@/components/shared/Toast'
-import OfflineIndicator      from '@/components/shared/OfflineIndicator'
+import { ToastProvider }    from '@/components/shared/Toast'
+import OfflineIndicator     from '@/components/shared/OfflineIndicator'
+import { LanguageProvider } from '@/components/providers/LanguageProvider'
 
 export const metadata: Metadata = {
   title:       { default: 'CivilOS Hub', template: '%s | CivilOS Hub' },
-  description: 'সিভিল ইঞ্জিনিয়ারিং প্রজেক্ট ম্যানেজমেন্ট',
+  description: 'Civil Engineering Project Management',
   manifest:    '/manifest.json',
   icons: {
-    icon:  '/favicon.ico',
-    apple: '/icons/icon-192.png',
+    icon: [
+      { url: '/favicon.ico',          sizes: 'any' },
+      { url: '/icons/favicon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
   },
   appleWebApp: {
     capable:        true,
     statusBarStyle: 'default',
     title:          'CivilOS Hub',
   },
-  keywords: ['civil engineering', 'project management', 'BNBC', 'Bangladesh', 'সিভিল'],
+  keywords: ['civil engineering', 'project management', 'BNBC', 'Bangladesh'],
 }
 
 export const viewport: Viewport = {
-  themeColor:          '#0D47A1',
-  width:               'device-width',
-  initialScale:        1,
-  maximumScale:        1,
-  userScalable:        false,
+  themeColor:   '#0D47A1',
+  width:        'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="bn">
+      <head>
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+      </head>
       <body>
-        <ToastProvider>
-          <OfflineIndicator />
-          {children}
-        </ToastProvider>
+        <LanguageProvider>
+          <ToastProvider>
+            <OfflineIndicator />
+            {children}
+          </ToastProvider>
+        </LanguageProvider>
       </body>
     </html>
   )

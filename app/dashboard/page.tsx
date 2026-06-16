@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useAuthStore }    from '@/store/useAuthStore'
 import { useProjectStore } from '@/store/useProjectStore'
+import { useLang }         from '@/components/providers/LanguageProvider'
 import { getGreeting, getStatusColor, getStatusLabel, formatDate } from '@/lib/utils'
 import StatCard           from '@/components/dashboard/StatCard'
 import StatusDonutChart   from '@/components/dashboard/StatusDonutChart'
@@ -13,11 +14,13 @@ import RecentActivity     from '@/components/dashboard/RecentActivity'
 import {
   FolderOpen, Plus, TrendingUp, CheckCircle,
   PauseCircle, Clock, Search, ChevronRight, Loader2,
+  BarChart2, Link2,
 } from 'lucide-react'
 
 export default function DashboardPage() {
   const { user }                             = useAuthStore()
   const { projects, loading, fetchProjects } = useProjectStore()
+  const { t, lang }                          = useLang()
   const [search, setSearch]                  = useState('')
 
   useEffect(() => {
@@ -43,10 +46,12 @@ export default function DashboardPage() {
   }).slice(0, 6)
 
   const donutSegments = [
-    { label: 'চলমান',   value: active,    color: '#2E7D32' },
-    { label: 'সম্পন্ন', value: completed, color: '#1565C0' },
-    { label: 'বিরতি',   value: onHold,    color: '#F9A825' },
+    { label: t('activeLabel'),    value: active,    color: '#2E7D32' },
+    { label: t('completedLabel'), value: completed, color: '#1565C0' },
+    { label: t('onHoldLabel'),    value: onHold,    color: '#F9A825' },
   ]
+
+  const dateLocale = lang === 'bn' ? 'en-BD' : 'en-US'
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -55,16 +60,16 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl font-heading font-bold text-gray-900">
-            {getGreeting()}, {user?.displayName ?? 'Engineer'} 👋
+            {getGreeting()}, {user?.displayName ?? t('engineer')} 👋
           </h1>
           <p className="text-gray-500 text-sm mt-0.5">
-            {new Date().toLocaleDateString('en-BD', {
+            {new Date().toLocaleDateString(dateLocale, {
               weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
             })}
           </p>
         </div>
         <Link href="/dashboard/projects/new" className="btn-primary text-sm px-4 py-2.5 self-start sm:self-auto">
-          <Plus size={18} /> নতুন প্রজেক্ট
+          <Plus size={18} /> {t('newProject')}
         </Link>
       </div>
 
@@ -76,20 +81,21 @@ export default function DashboardPage() {
         <>
           {/* Stat Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard label="মোট প্রজেক্ট" value={total}     icon={FolderOpen}  color="#1565C0" bg="#E3F2FD" sub={`এই মাসে ${thisMonth}টি নতুন`} />
-            <StatCard label="চলমান"         value={active}    icon={TrendingUp}  color="#2E7D32" bg="#E8F5E9" />
-            <StatCard label="সম্পন্ন"       value={completed} icon={CheckCircle} color="#1565C0" bg="#E8EAF6" />
-            <StatCard label="বিরতিতে"       value={onHold}    icon={PauseCircle} color="#F57F17" bg="#FFF8E1" />
+            <StatCard label={t('totalProjects')} value={total}     icon={FolderOpen}  color="#1565C0" bg="#E3F2FD"
+              sub={t('thisMonthNew', { n: thisMonth })} />
+            <StatCard label={t('active')}        value={active}    icon={TrendingUp}  color="#2E7D32" bg="#E8F5E9" />
+            <StatCard label={t('completed')}     value={completed} icon={CheckCircle} color="#1565C0" bg="#E8EAF6" />
+            <StatCard label={t('onHold')}        value={onHold}    icon={PauseCircle} color="#F57F17" bg="#FFF8E1" />
           </div>
 
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="card p-5 flex flex-col items-center">
-              <h2 className="section-title w-full mb-4"><FolderOpen size={16} /> স্ট্যাটাস বিভাজন</h2>
+              <h2 className="section-title w-full mb-4"><FolderOpen size={16} /> {t('statusBreakdown')}</h2>
               <StatusDonutChart segments={donutSegments} total={total} size={180} />
             </div>
             <div className="card p-5 lg:col-span-2">
-              <h2 className="section-title mb-4"><Clock size={16} /> মাসিক প্রজেক্ট</h2>
+              <h2 className="section-title mb-4"><Clock size={16} /> {t('monthlyProjects')}</h2>
               <MonthlyBarChart projects={projects} />
             </div>
           </div>
@@ -97,16 +103,16 @@ export default function DashboardPage() {
           {/* Progress + Activity */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="card p-5">
-              <h2 className="section-title mb-5"><TrendingUp size={16} /> প্রজেক্টের অগ্রগতি</h2>
+              <h2 className="section-title mb-5"><TrendingUp size={16} /> {t('projectProgress')}</h2>
               {total === 0 ? (
-                <p className="text-gray-400 text-sm text-center py-6">কোনো প্রজেক্ট নেই</p>
+                <p className="text-gray-400 text-sm text-center py-6">{t('noProjects')}</p>
               ) : (
                 <div className="space-y-4">
-                  <CompletionProgress label="চলমান"   value={active}    total={total} color="#2E7D32" />
-                  <CompletionProgress label="সম্পন্ন" value={completed} total={total} color="#1565C0" />
-                  <CompletionProgress label="বিরতি"   value={onHold}    total={total} color="#F9A825" />
+                  <CompletionProgress label={t('activeLabel')}    value={active}    total={total} color="#2E7D32" />
+                  <CompletionProgress label={t('completedLabel')} value={completed} total={total} color="#1565C0" />
+                  <CompletionProgress label={t('onHoldLabel')}    value={onHold}    total={total} color="#F9A825" />
                   <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-sm text-gray-600">সামগ্রিক সম্পন্নতার হার</span>
+                    <span className="text-sm text-gray-600">{t('overallCompletion')}</span>
                     <span className="text-2xl font-heading font-bold text-primary-900">
                       {total > 0 ? Math.round((completed / total) * 100) : 0}%
                     </span>
@@ -116,7 +122,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="card p-5">
-              <h2 className="section-title mb-4"><Clock size={16} /> সাম্প্রতিক কার্যক্রম</h2>
+              <h2 className="section-title mb-4"><Clock size={16} /> {t('recentActivity')}</h2>
               {user && <RecentActivity userId={user.uid} />}
             </div>
           </div>
@@ -124,15 +130,15 @@ export default function DashboardPage() {
           {/* Project Search + List */}
           <div className="card overflow-hidden">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-4 border-b border-gray-50">
-              <h2 className="section-title"><FolderOpen size={16} /> প্রজেক্ট তালিকা</h2>
+              <h2 className="section-title"><FolderOpen size={16} /> {t('projectList')}</h2>
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input value={search} onChange={e => setSearch(e.target.value)}
-                    placeholder="খুঁজুন..." className="input-field pl-8 py-2 text-sm w-40 sm:w-48" />
+                    placeholder={t('search')} className="input-field pl-8 py-2 text-sm w-40 sm:w-48" />
                 </div>
                 <Link href="/dashboard/projects" className="text-sm text-primary-900 hover:underline font-medium whitespace-nowrap">
-                  সব দেখুন →
+                  {t('seeAll')}
                 </Link>
               </div>
             </div>
@@ -141,11 +147,11 @@ export default function DashboardPage() {
               <div className="py-14 text-center">
                 <FolderOpen size={40} className="text-gray-200 mx-auto mb-3" />
                 <p className="text-gray-500 text-sm">
-                  {search ? 'কোনো প্রজেক্ট পাওয়া যায়নি' : 'কোনো প্রজেক্ট নেই'}
+                  {search ? t('noProjectsFound') : t('noProjects')}
                 </p>
                 {!search && (
                   <Link href="/dashboard/projects/new" className="btn-primary inline-flex mt-4 text-sm px-4 py-2">
-                    <Plus size={16} /> নতুন প্রজেক্ট
+                    <Plus size={16} /> {t('newProject')}
                   </Link>
                 )}
               </div>
@@ -178,18 +184,18 @@ export default function DashboardPage() {
           {/* Quick Actions */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { href: '/dashboard/projects/new', icon: '➕', label: 'নতুন প্রজেক্ট', disabled: false },
-              { href: '/dashboard/projects',     icon: '📁', label: 'সব প্রজেক্ট',   disabled: false },
-              { href: '#',                        icon: '📊', label: 'রিপোর্ট',        disabled: true  },
-              { href: '#',                        icon: '🔗', label: 'Integration',     disabled: true  },
+              { href: '/dashboard/projects/new', Icon: Plus,      labelKey: 'quickNewProject'  as const, disabled: false },
+              { href: '/dashboard/projects',     Icon: FolderOpen,labelKey: 'quickAllProjects' as const, disabled: false },
+              { href: '#',                       Icon: BarChart2, labelKey: 'quickReports'     as const, disabled: true  },
+              { href: '#',                       Icon: Link2,     labelKey: 'quickIntegration' as const, disabled: true  },
             ].map(item => (
-              <Link key={item.label} href={item.href}
+              <Link key={item.labelKey} href={item.href}
                 className={`card p-4 flex flex-col items-center gap-2 text-center
                   hover:shadow-md transition-shadow
                   ${item.disabled ? 'opacity-50 pointer-events-none' : ''}`}>
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-xs font-semibold text-gray-700">{item.label}</span>
-                {item.disabled && <span className="text-xs text-gray-400">শীঘ্রই</span>}
+                <item.Icon size={22} className="text-primary-900" />
+                <span className="text-xs font-semibold text-gray-700">{t(item.labelKey)}</span>
+                {item.disabled && <span className="text-xs text-gray-400">{t('comingSoon')}</span>}
               </Link>
             ))}
           </div>
