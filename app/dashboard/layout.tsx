@@ -11,7 +11,7 @@ import {
   LayoutDashboard, FolderOpen, LogOut,
   Menu, X, Loader2, Clock, ExternalLink,
   ChevronDown, ChevronUp, Languages,
-  BookOpen, Building2, PenRuler, Calculator,
+  BookOpen, Building2, DraftingCompass, Calculator,
   BarChart2, Layers,
 } from 'lucide-react'
 
@@ -25,7 +25,7 @@ const otherApps = [
   },
   {
     href:    'https://enginex-archdrawing.vercel.app',
-    icon:    PenRuler,
+    icon:    DraftingCompass,
     labelKey: 'appArchDrawing' as const,
     subKey:   'appArchDrawingSub' as const,
   },
