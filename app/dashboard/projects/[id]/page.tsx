@@ -1,5 +1,6 @@
-// app/dashboard/projects/[id]/page.tsx
 'use client'
+// app/dashboard/projects/[id]/page.tsx
+// updated
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -17,11 +18,11 @@ import {
 } from 'lucide-react'
 
 const tabs = [
-  { id: 'site',     label: 'সাইট',     icon: MapPin,     phase: 'Phase 3' },
+  { id: 'site',     label: 'Site Info', icon: MapPin,     phase: 'Phase 3' },
   { id: 'bnbc',     label: 'BNBC',      icon: FileText,   phase: 'Phase 4' },
-  { id: 'building', label: 'ভবন',       icon: Building2,  phase: 'Phase 5' },
-  { id: 'docs',     label: 'ডকুমেন্ট', icon: Layers,     phase: 'Phase 7' },
-  { id: 'activity', label: 'ইতিহাস',   icon: Clock,      phase: 'Phase 8' },
+  { id: 'building', label: 'Building',  icon: Building2,  phase: 'Phase 5' },
+  { id: 'docs',     label: 'Documents', icon: Layers,     phase: 'Phase 7' },
+  { id: 'activity', label: 'Activity',  icon: Clock,      phase: 'Phase 8' },
 ]
 
 export default function ProjectDetailPage() {
@@ -45,7 +46,7 @@ export default function ProjectDetailPage() {
 
   const handleDelete = async () => {
     if (!project) return
-    if (!confirm(`"${project.projectName}" সম্পূর্ণ ডিলিট করবেন?`)) return
+    if (!confirm(`Delete "${project.projectName}"? This cannot be undone.`)) return
     setDeleting(true)
     const ok = await removeProject(project.id)
     if (ok) router.replace('/dashboard/projects')
@@ -63,9 +64,9 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="text-center py-20">
-        <p className="text-gray-500 mb-4">প্রজেক্ট পাওয়া যায়নি।</p>
+        <p className="text-gray-500 mb-4">Project not found.</p>
         <Link href="/dashboard/projects" className="btn-primary inline-flex text-sm px-4 py-2">
-          ← প্রজেক্ট তালিকায় ফিরুন
+          ← Back to Projects
         </Link>
       </div>
     )
@@ -76,16 +77,16 @@ export default function ProjectDetailPage() {
       {/* Back */}
       <Link href="/dashboard/projects"
         className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-800 mb-5 text-sm transition-colors">
-        <ArrowLeft size={16} /> প্রজেক্ট তালিকা
+        <ArrowLeft size={16} /> Projects
       </Link>
 
       {/* Hero card */}
-      <div className="bg-primary-900 rounded-2xl text-white p-6 mb-6">
+      <div className="bg-brand-600 rounded-xl text-white p-5 mb-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             {/* Code + Status */}
             <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <span className="bg-white/15 text-xs px-2 py-1 rounded-lg font-mono">
+              <span className="bg-white/20 text-xs px-2 py-1 rounded-lg font-mono">
                 {project.projectCode}
               </span>
               <select
@@ -93,9 +94,9 @@ export default function ProjectDetailPage() {
                 onChange={e => changeStatus(project.id, e.target.value as Project['status'])}
                 className={`text-xs font-semibold px-2 py-1 rounded-lg border cursor-pointer
                   focus:outline-none ${getStatusColor(project.status)}`}>
-                <option value="active">চলমান</option>
-                <option value="on_hold">বিরতি</option>
-                <option value="completed">সম্পন্ন</option>
+                <option value="active">Active</option>
+                <option value="on_hold">On hold</option>
+                <option value="completed">Completed</option>
               </select>
             </div>
 
@@ -105,7 +106,7 @@ export default function ProjectDetailPage() {
             </h1>
 
             {/* Meta */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-blue-200 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-blue-200 text-xs">
               <div className="flex items-center gap-2">
                 <User size={14} /> {project.clientName}
               </div>

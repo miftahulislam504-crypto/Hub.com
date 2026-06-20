@@ -1,42 +1,37 @@
 'use client'
-// components/providers/LanguageProvider.tsx
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
-import { translations, Lang, TranslationKey } from '@/lib/i18n'
+import { createContext, useContext, ReactNode } from 'react'
+import { translations, TranslationKey } from '@/lib/i18n'
 
-interface LanguageContextType {
-  lang: Lang
-  toggleLang: () => void
-  t: (key: TranslationKey, vars?: Record<string, string | number>) => string
+type TFn = (key: TranslationKey, vars?: Record<string, string | number>) => string
+
+interface LangContextValue {
+  lang: 'en'
+  t: TFn
+  toggleLang: () => void  // kept for compatibility but does nothing
 }
 
-const LanguageContext = createContext<LanguageContextType>({
-  lang: 'bn',
-  toggleLang: () => {},
-  t: (key) => key,
-})
+const LangContext = createContext<LangContextValue | null>(null)
+
+function translate(key: TranslationKey, vars?: Record<string, string | number>): string {
+  let str = translations.en[key] ?? key
+  if (vars) {
+    Object.entries(vars).forEach(([k, v]) => {
+      str = str.replace(`{${k}}`, String(v))
+    })
+  }
+  return str
+}
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>('bn')
-
-  const toggleLang = useCallback(() => {
-    setLang(prev => prev === 'bn' ? 'en' : 'bn')
-  }, [])
-
-  const t = useCallback((key: TranslationKey, vars?: Record<string, string | number>): string => {
-    let str: string = translations[lang][key] as string
-    if (vars) {
-      Object.entries(vars).forEach(([k, v]) => {
-        str = str.replace(`{${k}}`, String(v))
-      })
-    }
-    return str
-  }, [lang])
-
   return (
-    <LanguageContext.Provider value={{ lang, toggleLang, t }}>
+    <LangContext.Provider value={{ lang: 'en', t: translate, toggleLang: () => {} }}>
       {children}
-    </LanguageContext.Provider>
+    </LangContext.Provider>
   )
 }
 
-export const useLang = () => useContext(LanguageContext)
+export function useLang() {
+  const ctx = useContext(LangContext)
+  if (!ctx) throw new Error('useLang must be used within LanguageProvider')
+  return ctx
+}

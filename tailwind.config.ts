@@ -9,25 +9,55 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50:  '#e8eaf6',
-          100: '#c5cae9',
-          500: '#3f51b5',
-          600: '#3949ab',
-          700: '#303f9f',
-          800: '#283593',
-          900: '#0d47a1',
+        // CivilOS Design System — Light Clean
+        brand: {
+          50:  '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
         },
-        accent: {
-          400: '#ff8f00',
-          500: '#ff6d00',
-          600: '#e65100',
+        surface: {
+          DEFAULT: '#f8fafc',
+          card:    '#ffffff',
+          hover:   '#f1f5f9',
+          border:  '#e2e8f0',
         },
-        surface: '#F5F7FA',
+        text: {
+          primary:   '#0f172a',
+          secondary: '#475569',
+          muted:     '#94a3b8',
+        },
+        status: {
+          activeText:    '#15803d',
+          activeBg:      '#dcfce7',
+          activeBorder:  '#86efac',
+          holdText:      '#b45309',
+          holdBg:        '#fef3c7',
+          holdBorder:    '#fcd34d',
+          doneText:      '#1d4ed8',
+          doneBg:        '#dbeafe',
+          doneBorder:    '#93c5fd',
+        },
       },
       fontFamily: {
-        bengali: ['Noto Sans Bengali', 'sans-serif'],
-        heading: ['Rajdhani', 'sans-serif'],
+        sans:    ['Inter', 'sans-serif'],
+        display: ['Inter', 'sans-serif'],
+        mono:    ['JetBrains Mono', 'monospace'],
+      },
+      borderRadius: {
+        DEFAULT: '8px',
+        lg:      '12px',
+        xl:      '16px',
+        '2xl':   '20px',
+      },
+      boxShadow: {
+        card: '0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07)',
+        md:   '0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07)',
+        lg:   '0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07)',
       },
     },
   },
