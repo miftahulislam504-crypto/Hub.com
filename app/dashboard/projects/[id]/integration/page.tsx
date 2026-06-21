@@ -14,6 +14,7 @@ import {
   TARGET_APPS,
 } from '@/lib/types/integration.types'
 import DataReadinessCard from '@/components/integration/DataReadinessCard'
+import EcosystemAppsCard from '@/components/integration/EcosystemAppsCard'
 import AppExportCard     from '@/components/integration/AppExportCard'
 import JsonPreviewModal  from '@/components/integration/JsonPreviewModal'
 import {
@@ -91,9 +92,12 @@ export default function IntegrationPage() {
           {/* Data readiness */}
           <DataReadinessCard payload={payload} projectId={id} />
 
+          {/* Live ecosystem status — replaces the old "future" promise for Structural */}
+          <EcosystemAppsCard projectId={id} />
+
           {/* Full export actions */}
           <div className="card p-5">
-            <h3 className="section-title mb-4">📦 সম্পূর্ণ Export</h3>
+            <h3 className="section-title mb-4">📦 সম্পূর্ণ Export (যেসব App এখনো manual import করে)</h3>
             <div className="flex flex-col sm:flex-row gap-3">
               <button onClick={handleFullDownload}
                 className="btn-primary flex-1">
@@ -143,7 +147,7 @@ export default function IntegrationPage() {
             </div>
 
             <div className="mt-4 bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700">
-              💡 ভবিষ্যতে সব CivilOS App একটি Firebase project শেয়ার করবে — তখন এই manual export এর দরকার হবে না। Data স্বয়ংক্রিয়ভাবে sync হবে।
+              💡 Structural App এখন shared Firestore-এর মাধ্যমে সরাসরি sync হয় — উপরে "🌐 Ecosystem App Status" থেকে খুললেই Hub-এর Site Info/BNBC/Building তথ্য দিয়ে স্বয়ংক্রিয়ভাবে শুরু হয়ে যাবে, কোনো manual import লাগবে না। বাকি App গুলো (Architectural, Estimating, PM, Reports) এখনো এই manual JSON export-এর উপর নির্ভরশীল — সেগুলো ধাপে ধাপে একই Direct-sync মডেলে আনা হচ্ছে।
             </div>
           </div>
         </div>
