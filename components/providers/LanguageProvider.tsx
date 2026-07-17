@@ -13,7 +13,7 @@ interface LangContextValue {
 const LangContext = createContext<LangContextValue | null>(null)
 
 function translate(key: TranslationKey, vars?: Record<string, string | number>): string {
-  let str = translations.en[key] ?? key
+  let str: string = translations.en[key] ?? key
   if (vars) {
     Object.entries(vars).forEach(([k, v]) => {
       str = str.replace(`{${k}}`, String(v))

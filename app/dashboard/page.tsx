@@ -37,7 +37,7 @@ export default function DashboardPage() {
 
   const thisMonth = projects.filter(p => {
     try {
-      const d = p.createdAt?.toDate ? p.createdAt.toDate() : new Date(p.createdAt)
+      const d = new Date(p.createdAt as unknown as string | number | Date)
       const n = new Date()
       return d.getMonth() === n.getMonth() && d.getFullYear() === n.getFullYear()
     } catch { return false }
