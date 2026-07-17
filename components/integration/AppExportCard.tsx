@@ -29,6 +29,7 @@ export default function AppExportCard({ app, payload }: Props) {
   const buildAppPayload = (): HubExportPayload => {
     const filtered: HubExportPayload = {
       version:     payload.version,
+      contractSchemaVersion: payload.contractSchemaVersion,
       exportedAt:  new Date().toISOString(),
       projectId:   payload.projectId,
       projectCode: payload.projectCode,

@@ -9,6 +9,7 @@ import {
   getBasicWindSpeed, getSpectralAcceleration,
   getRiskCategory, STRUCTURAL_SYSTEMS,
 } from '@/lib/types/bnbc.types'
+import { bumpModuleVersion, linkDependency, getModuleVersion } from '@/lib/firestore/dependency.firestore'
 
 const bnbcRef = (projectId: string) =>
   doc(db, 'projects', projectId, 'bnbc_settings', 'data')
@@ -74,6 +75,24 @@ export async function saveBNBCSettings(
     }
 
     await setDoc(ref, payload)
+
+    // Version tracking + dependency link (Phase 2)
+    // soilType সরাসরি Site Info থেকে আসে (bnbc.types.ts কমেন্ট অনুযায়ী) —
+    // এটাই একমাত্র genuine cross-module link এখন পর্যন্ত, তাই এটাই record
+    // করা হচ্ছে। SiteInfo আপডেট হয়ে soilType বদলালে এই BNBC record
+    // OUTDATED দেখাবে যতক্ষণ না আবার save করে নতুন version link হয়।
+    try {
+      const newVersion = await bumpModuleVersion(projectId, 'bnbcSettings')
+      const siteInfoVersion = await getModuleVersion(projectId, 'siteInfo')
+      await linkDependency(
+        projectId,
+        'bnbcSettings',
+        'siteInfo',
+        siteInfoVersion?.currentVersion ?? 1,
+        'soilType মান Site Info থেকে নেওয়া হয়েছে'
+      )
+      void newVersion
+    } catch (_) { /* non-critical, don't block save on version tracking failure */ }
 
     // Activity log
     try {

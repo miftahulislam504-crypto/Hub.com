@@ -1,8 +1,8 @@
 // components/integration/EcosystemAppsCard.tsx
 'use client'
 import { useEffect, useState } from 'react'
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
+import { hub } from '@/lib/hub-sdk'
+import { APP_CHECK_PATHS } from '@/lib/types/workflow.types'
 import { CheckCircle, Circle, ExternalLink, Loader2 } from 'lucide-react'
 
 interface AppLiveStatus {
@@ -27,35 +27,35 @@ const APPS: Omit<AppLiveStatus, 'liveSynced'>[] = [
     name:      'Structural Analysis & Design',
     icon:      '🏗️',
     url:       'https://enginex-structural.vercel.app',
-    checkPath: 'structuralData/civp',
+    checkPath: APP_CHECK_PATHS.structural ?? null,
   },
   {
     id:        'architectural',
     name:      'Architectural Drawing',
     icon:      '📐',
     url:       'https://enginex-archdrawing.vercel.app',
-    checkPath: null, // not yet wired to the shared project ID — manual export below
+    checkPath: APP_CHECK_PATHS.architectural ?? null, // not yet wired to the shared project ID — manual export below
   },
   {
     id:        'estimating',
     name:      'Estimating, Costing & BOQ',
     icon:      '📋',
     url:       'https://enginex-estimate.vercel.app',
-    checkPath: null,
+    checkPath: APP_CHECK_PATHS.estimating ?? null,
   },
   {
     id:        'projectmgmt',
     name:      'Project Management',
     icon:      '📊',
     url:       'https://enginex-pm.vercel.app',
-    checkPath: null,
+    checkPath: APP_CHECK_PATHS.projectmgmt ?? null,
   },
   {
     id:        'reports',
     name:      'Reports App',
     icon:      '📑',
     url:       'https://enginex-reports.vercel.app',
-    checkPath: null,
+    checkPath: APP_CHECK_PATHS.reports ?? null,
   },
 ]
 
@@ -65,26 +65,25 @@ export default function EcosystemAppsCard({ projectId }: Props) {
   )
 
   useEffect(() => {
-    let cancelled = false
+    // Event Service (Phase 5) — আগে এখানে একবার mount হলে check হতো
+    // (one-time getDoc)। এখন প্রতিটা App-এর জন্য আলাদা realtime
+    // onSnapshot subscription — Structural App যদি এই পেজ খোলা অবস্থায়
+    // কখনো নিজের ডেটা লেখে, UI সাথে সাথে আপডেট হবে, refresh লাগবে না।
+    const unsubscribers = APPS.map((app, index) => {
+      if (!app.checkPath) return () => {}
 
-    async function check() {
-      const results = await Promise.all(
-        APPS.map(async (app) => {
-          if (!app.checkPath) return { ...app, liveSynced: 'unknown' as const }
-          try {
-            const parts = app.checkPath.split('/') // e.g. ['structuralData', 'civp']
-            const snap  = await getDoc(doc(db, 'projects', projectId, parts[0], parts[1]))
-            return { ...app, liveSynced: (snap.exists() ? 'yes' : 'no') as const }
-          } catch {
-            return { ...app, liveSynced: 'unknown' as const }
-          }
+      return hub.subscribeToAppTouched(projectId, app.checkPath, (exists) => {
+        const liveSynced: AppLiveStatus['liveSynced'] =
+          exists === null ? 'unknown' : exists ? 'yes' : 'no'
+        setStatuses(prev => {
+          const next = [...prev]
+          next[index] = { ...next[index], liveSynced }
+          return next
         })
-      )
-      if (!cancelled) setStatuses(results)
-    }
+      })
+    })
 
-    check()
-    return () => { cancelled = true }
+    return () => { unsubscribers.forEach(unsub => unsub()) }
   }, [projectId])
 
   return (

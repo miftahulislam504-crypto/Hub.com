@@ -10,6 +10,7 @@ import {
   BNBCExport,
   BuildingExport,
 } from '@/lib/types/integration.types'
+import { CONTRACT_SCHEMA_VERSION } from '@/lib/types/contract.types'
 
 // ─── Build full export payload ────────────────────────────────────────────────
 export async function buildExportPayload(
@@ -27,6 +28,7 @@ export async function buildExportPayload(
 
     const payload: HubExportPayload = {
       version:     '1.0',
+      contractSchemaVersion: CONTRACT_SCHEMA_VERSION,
       exportedAt:  new Date().toISOString(),
       projectId,
       projectCode: project.projectCode,
@@ -118,6 +120,21 @@ export function downloadJSON(payload: HubExportPayload, filename: string) {
   a.download = filename
   a.click()
   URL.revokeObjectURL(url)
+}
+
+// ─── Download any Blob (PDF/CSV/ZIP export — Phase 8) ────────────────────────
+export function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob)
+  const a   = document.createElement('a')
+  a.href    = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+// ─── Download as CSV text (Phase 8) ────────────────────────────────────────
+export function downloadCSV(csvText: string, filename: string) {
+  downloadBlob(new Blob([csvText], { type: 'text/csv;charset=utf-8' }), filename)
 }
 
 // ─── Copy to clipboard ────────────────────────────────────────────────────────

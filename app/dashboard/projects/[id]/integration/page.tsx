@@ -5,20 +5,23 @@ import { useParams }           from 'next/navigation'
 import Link                    from 'next/link'
 import { useProjectStore }     from '@/store/useProjectStore'
 import { useAuthStore }        from '@/store/useAuthStore'
-import {
-  buildExportPayload,
-  downloadJSON,
-} from '@/lib/services/integration.service'
+import { buildExportPayload } from '@/lib/services/integration.service'
 import {
   HubExportPayload,
   TARGET_APPS,
 } from '@/lib/types/integration.types'
 import DataReadinessCard from '@/components/integration/DataReadinessCard'
+import DependencyStatusCard from '@/components/integration/DependencyStatusCard'
+import ApprovalCard from '@/components/integration/ApprovalCard'
+import WorkflowProgressCard from '@/components/integration/WorkflowProgressCard'
 import EcosystemAppsCard from '@/components/integration/EcosystemAppsCard'
+import ActivityFeedCard from '@/components/integration/ActivityFeedCard'
+import ReportsCenterCard from '@/components/integration/ReportsCenterCard'
+import ExportCenterCard  from '@/components/integration/ExportCenterCard'
 import AppExportCard     from '@/components/integration/AppExportCard'
 import JsonPreviewModal  from '@/components/integration/JsonPreviewModal'
 import {
-  ArrowLeft, Download, Eye, Loader2, RefreshCw,
+  ArrowLeft, Loader2, RefreshCw,
 } from 'lucide-react'
 
 export default function IntegrationPage() {
@@ -28,7 +31,6 @@ export default function IntegrationPage() {
   const [payload,   setPayload]          = useState<HubExportPayload | null>(null)
   const [loading,   setLoading]          = useState(true)
   const [showPreview, setShowPreview]    = useState(false)
-  const [lastExport,  setLastExport]     = useState<string | null>(null)
 
   const project = projects.find(p => p.id === id)
 
@@ -44,13 +46,6 @@ export default function IntegrationPage() {
   }
 
   useEffect(() => { loadPayload() }, [id])
-
-  const handleFullDownload = () => {
-    if (!payload) return
-    const filename = `civilos-hub_${payload.projectCode}_full_${Date.now()}.json`
-    downloadJSON(payload, filename)
-    setLastExport(new Date().toLocaleTimeString('en-BD'))
-  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -89,31 +84,35 @@ export default function IntegrationPage() {
       ) : (
         <div className="space-y-5">
 
+          {/* Overall workflow stage + app signals — Phase 4 (Workflow Engine) */}
+          <WorkflowProgressCard projectId={id} />
+
           {/* Data readiness */}
           <DataReadinessCard payload={payload} projectId={id} />
+
+          {/* Module dependency status — Phase 2 (Version Dependency System) */}
+          <DependencyStatusCard projectId={id} />
+
+          {/* Approve / Review / Reject per module — Phase 3 (Approval System) */}
+          <ApprovalCard projectId={id} user={user} />
+
+          {/* Report registry — Phase 7 (Report Center) */}
+          <ReportsCenterCard projectId={id} user={user} />
 
           {/* Live ecosystem status — replaces the old "future" promise for Structural */}
           <EcosystemAppsCard projectId={id} />
 
-          {/* Full export actions */}
-          <div className="card p-5">
-            <h3 className="section-title mb-4">📦 সম্পূর্ণ Export (যেসব App এখনো manual import করে)</h3>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button onClick={handleFullDownload}
-                className="btn-primary flex-1">
-                <Download size={18} /> সম্পূর্ণ JSON Download
-              </button>
-              <button onClick={() => setShowPreview(true)}
-                className="btn-outline flex-1">
-                <Eye size={18} /> JSON Preview
-              </button>
+          {/* Live event log — Phase 5 (Event Service) */}
+          <ActivityFeedCard projectId={id} />
+
+          {/* Export Center — Phase 8 */}
+          {project ? (
+            <ExportCenterCard project={project} payload={payload} onPreview={() => setShowPreview(true)} />
+          ) : (
+            <div className="card p-5 flex items-center justify-center text-sm text-gray-400">
+              <Loader2 className="animate-spin mr-2" size={16} /> প্রজেক্ট তথ্য লোড হচ্ছে...
             </div>
-            {lastExport && (
-              <p className="text-xs text-green-600 mt-2 text-center">
-                ✓ সর্বশেষ export: {lastExport}
-              </p>
-            )}
-          </div>
+          )}
 
           {/* Per-app export */}
           <div>

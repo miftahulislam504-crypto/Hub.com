@@ -8,6 +8,7 @@ import {
   calcTotalHeight, calcTotalFloorArea,
 } from '@/lib/types/building.types'
 import { ServiceResult } from '@/lib/types'
+import { bumpModuleVersion } from '@/lib/firestore/dependency.firestore'
 
 const buildingRef = (projectId: string) =>
   doc(db, 'projects', projectId, 'building_information', 'data')
@@ -78,6 +79,11 @@ export async function saveBuildingInfo(
     }
 
     await setDoc(ref, payload)
+
+    // Version tracking (Phase 2)
+    try {
+      await bumpModuleVersion(projectId, 'buildingInfo')
+    } catch (_) { /* non-critical, don't block save on version tracking failure */ }
 
     // Activity log
     try {

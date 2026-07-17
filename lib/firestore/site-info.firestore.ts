@@ -5,6 +5,7 @@ import {
 import { db } from '@/lib/firebase'
 import { SiteInfo, SiteInfoFormData } from '@/lib/types/site-info.types'
 import { ServiceResult } from '@/lib/types'
+import { bumpModuleVersion } from '@/lib/firestore/dependency.firestore'
 
 const siteRef = (projectId: string) =>
   doc(db, 'projects', projectId, 'site_information', 'data')
@@ -71,6 +72,11 @@ export async function saveSiteInfo(
     }
 
     await setDoc(ref, payload)
+
+    // Version tracking (Phase 2)
+    try {
+      await bumpModuleVersion(projectId, 'siteInfo')
+    } catch (_) { /* non-critical, don't block save on version tracking failure */ }
 
     // Activity log
     try {

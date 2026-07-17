@@ -72,6 +72,15 @@ service cloud.firestore {
     match /exports/{exportId}           { allow read, write: if isSignedIn(); }
 
     // Ecosystem bridge: civilos_bridge/{projectId}_{sourceApp}
+    // ⚠️ DEPRECATED GOING FORWARD (Phase 1 decision, see PHASE1_NOTES.md).
+    // Structural App এখনো complete না, তাই এখনো কিছুই এটার ওপর নির্ভর করে
+    // build হয়নি — Hub codebase কোথাও এই collection touch করে না।
+    // যখন Structural App-এর কাজ আবার শুরু হবে: নতুন করে এই bridge extend
+    // না করে lib/types/contract.types.ts (ContractEnvelope) ব্যবহার করে
+    // Hub-এর মাধ্যমে data exchange করা উচিত, প্ল্যানের core rule অনুযায়ী —
+    // "কোনো App অন্য App-এর private collection directly read করবে না,
+    // Hub approved snapshot provide করবে।" Rule-টা এখনো delete করা হয়নি
+    // (deployed file, safety), শুধু নতুন কাজ এখানে না বসানোর জন্য flag করা।
     match /civilos_bridge/{bridgeDocId} { allow read, write: if isSignedIn(); }
 
     // ──────────────────────────────────────────────────────────

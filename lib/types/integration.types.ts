@@ -1,9 +1,16 @@
 // lib/types/integration.types.ts
+import { CONTRACT_SCHEMA_VERSION } from './contract.types'
 
 // ─── Master Export Schema ─────────────────────────────────────────────────────
-// এই schema টা Hub থেকে সব app এ যাবে
+// এই schema টা Hub থেকে সব app এ যাবে।
+//
+// `version` ফিল্ডটা পুরনো — কোনো consuming app এখনো ভেঙে না যায় সেজন্য
+// রাখা হয়েছে। নতুন `contractSchemaVersion` ফিল্ডটা contract.types.ts এর
+// CONTRACT_SCHEMA_VERSION এর সাথে সবসময় sync থাকবে — এটাই আসল ecosystem-wide
+// schema version, `version` শুধু এই payload shape-এর নিজস্ব সংস্করণ।
 export interface HubExportPayload {
   version:    '1.0'
+  contractSchemaVersion: typeof CONTRACT_SCHEMA_VERSION
   exportedAt: string        // ISO date
   projectId:  string
   projectCode: string
