@@ -6,7 +6,7 @@ import { LanguageProvider } from '@/components/providers/LanguageProvider'
 
 export const metadata: Metadata = {
   title:       { default: 'CivilOS Hub', template: '%s | CivilOS Hub' },
-  description: 'Civil Engineering Project Management Platform',
+  description: 'Civil Engineering ecosystem brain',
   manifest:    '/manifest.json',
   icons: {
     icon: [

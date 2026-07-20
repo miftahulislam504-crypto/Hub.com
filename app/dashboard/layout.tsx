@@ -14,12 +14,11 @@ import {
 } from 'lucide-react'
 
 const otherApps = [
-  { href: 'https://enginex-structural.vercel.app',   icon: Building2,      label: 'Structural',        sub: 'Structural Design'       },
-  { href: 'https://enginex-archdrawing.vercel.app',  icon: DraftingCompass,label: 'Arch Drawing',      sub: 'Architectural Drawing'   },
-  { href: 'https://enginex-estimate.vercel.app',     icon: Calculator,     label: 'Estimating',        sub: 'Cost Estimation'         },
-  { href: 'https://enginex-pm.vercel.app',           icon: LayoutDashboard,label: 'Project Mgmt',      sub: 'Project Management'      },
-  { href: 'https://enginex-reports.vercel.app',      icon: BarChart2,      label: 'Reports',           sub: 'Project Reports'         },
-  { href: 'https://enginex-learning.vercel.app',     icon: BookOpen,       label: 'Learning',          sub: 'Learning Platform'       },
+  { href: 'https://enginexstruc.vercel.app',   icon: Building2,      label: 'Structural',        sub: 'Structural Design'       },
+  { href: 'https://enginexdraw.vercel.app',  icon: DraftingCompass,label: 'Arch Drawing',      sub: 'Architectural Drawing'   },
+  { href: 'https://enginexquanta.vercel.app',     icon: Calculator,     label: 'Estimating',        sub: 'Cost Estimation'         },
+  { href: 'https://enginexproject.vercel.app',           icon: LayoutDashboard,label: 'Project Mgmt',      sub: 'Project Management'      },
+  { href: 'https://enginexlearn.vercel.app',     icon: BookOpen,       label: 'Learning',          sub: 'Learning Platform'       },
 ]
 
 const navItems = [
