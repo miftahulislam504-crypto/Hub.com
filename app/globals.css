@@ -1,30 +1,15 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/*
- * ==================================================================
- * Tailwind v4 migration (v3 -> v4)
- * ==================================================================
- * Previously this file had @tailwind base/components/utilities plus
- * a separate tailwind.config.ts (brand-*/surface-*/text-*/status-*
- * scales). In v4 there is no config file: all tokens are defined
- * here as CSS custom properties inside the @theme block. The old v3
- * config is kept for reference at
- * _migration-reference/tailwind.config.ts.v3-backup.
- *
- * Color change: brand-* used to be a blue scale (#2563eb etc): now
- * it is grayscale/oklch (matching PM app / CivilOS PM, the new
- * permanent decision for the ecosystem). Class names (brand-50...900)
- * were deliberately left unchanged: only the values changed, not
- * the names: so .btn-primary, .nav-item-active etc switch to the
- * new colors without touching any component file.
- *
- * This file is kept in sync with CivilOS Estimating
- * app/globals.css (Estimating got the same migration, same
- * grayscale token values). If you change something here, make the
- * same change in Estimating too, or the two apps UI will slowly
- * diverge.
- */
+/* Tailwind v4 migration notes. This file used to import a separate
+   tailwind.config.ts with brand, surface, text and status color
+   scales. In v4 there is no config file; all tokens are defined
+   below as CSS custom properties inside the theme block. The old
+   config is kept for reference in the migration reference folder.
+   The brand color scale changed from blue to grayscale to match
+   the PM app. Class names were kept the same, only the color
+   values changed. Keep this file in sync with the Estimating app
+   globals file, which received the same color migration. */
 
 @custom-variant dark (&:is(.dark *));
 
