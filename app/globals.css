@@ -13,16 +13,16 @@
  * _migration-reference/tailwind.config.ts.v3-backup.
  *
  * Color change: brand-* used to be a blue scale (#2563eb etc) -- now
- * it's grayscale/oklch (matching PM app / CivilOS PM, the new
+ * it is grayscale/oklch (matching PM app / CivilOS PM, the new
  * permanent decision for the ecosystem). Class names (brand-50...900)
  * were deliberately left unchanged -- only the values changed, not
  * the names -- so .btn-primary, .nav-item-active etc switch to the
  * new colors without touching any component file.
  *
- * This file is kept in sync with CivilOS Estimating's
+ * This file is kept in sync with CivilOS Estimating
  * app/globals.css (Estimating got the same migration, same
  * grayscale token values). If you change something here, make the
- * same change in Estimating too, or the two apps' UI will slowly
+ * same change in Estimating too, or the two apps UI will slowly
  * diverge.
  */
 
