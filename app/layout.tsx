@@ -5,7 +5,7 @@ import OfflineIndicator    from '@/components/shared/OfflineIndicator'
 import { LanguageProvider } from '@/components/providers/LanguageProvider'
 
 export const metadata: Metadata = {
-  title:       { default: 'CivilOS Hub', template: '%s | CivilOS Hub' },
+  title:       { default: 'EngineX Hub', template: Enginex Hub },
   description: 'Civil Engineering ecosystem brain',
   manifest:    '/manifest.json',
   icons: {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     shortcut: '/favicon.ico',
   },
-  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'CivilOS Hub' },
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'EngineX Hub' },
   keywords: ['civil engineering', 'project management', 'BNBC', 'Bangladesh'],
 }
 

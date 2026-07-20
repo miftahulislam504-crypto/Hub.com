@@ -72,11 +72,11 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
         {/* Logo */}
         <div className="flex items-center gap-2.5 px-4 py-4 border-b border-surface-border">
           <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center flex-shrink-0">
-            <Image src="/logo.png" alt="CivilOS" width={20} height={20}
+            <Image src="/logo.png" alt="EngineX" width={20} height={20}
               className="object-contain brightness-0 invert" priority />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-sm font-bold text-text-primary leading-tight">CivilOS Hub</div>
+            <div className="text-sm font-bold text-text-primary leading-tight">EngineX Hub</div>
             <div className="text-xs text-text-muted">Project Management</div>
           </div>
           <button className="lg:hidden text-text-muted hover:text-text-primary p-1"
@@ -111,7 +111,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
             className="flex items-center justify-between w-full px-3 py-1.5 mb-1
                        text-text-muted hover:text-text-secondary transition-colors rounded-lg">
             <span className="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5">
-              <Layers size={11} /> CivilOS Apps
+              <Layers size={11} /> EngineX Apps
             </span>
             {appsExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
           </button>
@@ -168,7 +168,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
             <Image src="/logo.png" alt="Logo" width={18} height={18}
               className="object-contain brightness-0 invert" />
           </div>
-          <span className="font-bold text-sm text-text-primary">CivilOS Hub</span>
+          <span className="font-bold text-sm text-text-primary">EngineX Hub</span>
         </header>
 
         <main className="flex-1 p-4 lg:p-8 overflow-auto">
