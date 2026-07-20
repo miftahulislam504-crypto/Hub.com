@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor:   '#2563eb',
+  themeColor:   '#1a1a1a', // grayscale brand-800-এর কাছাকাছি — আগে ছিল #2563eb (পুরনো নীল ব্র্যান্ড)
   width:        'device-width',
   initialScale: 1,
   maximumScale: 1,

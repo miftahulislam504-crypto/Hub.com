@@ -129,7 +129,7 @@ export default function ProjectsPage() {
                     <span className="font-semibold text-text-primary text-sm truncate">
                       {p.projectName}
                     </span>
-                    <span className="text-xs font-mono text-text-muted bg-surface px-1.5 py-0.5 rounded hidden sm:inline">
+                    <span className="text-xs font-mono text-text-muted bg-surface px-1.5 py-0.5 rounded-md hidden sm:inline">
                       {p.projectCode}
                     </span>
                   </div>

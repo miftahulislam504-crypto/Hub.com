@@ -53,7 +53,7 @@ export default function DashboardPage() {
 
   const donutSegments = [
     { label: 'Active',    value: active,    color: '#16a34a' },
-    { label: 'Completed', value: completed, color: '#2563eb' },
+    { label: 'Completed', value: completed, color: '#404040' },
     { label: 'On hold',   value: onHold,    color: '#d97706' },
   ]
 
@@ -86,10 +86,10 @@ export default function DashboardPage() {
           {/* Stat Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <StatCard label="Total" value={total}
-              icon={FolderOpen}  color="#2563eb" bg="#dbeafe"
+              icon={FolderOpen}  color="#262626" bg="#f5f5f5"
               sub={thisMonth > 0 ? `+${thisMonth} this month` : undefined} />
             <StatCard label="Active"    value={active}    icon={TrendingUp}  color="#16a34a" bg="#dcfce7" />
-            <StatCard label="Completed" value={completed} icon={CheckCircle} color="#2563eb" bg="#dbeafe" />
+            <StatCard label="Completed" value={completed} icon={CheckCircle} color="#404040" bg="#f0f0f0" />
             <StatCard label="On hold"   value={onHold}    icon={PauseCircle} color="#d97706" bg="#fef3c7" />
           </div>
 
@@ -120,7 +120,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="space-y-4">
                   <CompletionProgress label="Active"    value={active}    total={total} color="#16a34a" />
-                  <CompletionProgress label="Completed" value={completed} total={total} color="#2563eb" />
+                  <CompletionProgress label="Completed" value={completed} total={total} color="#404040" />
                   <CompletionProgress label="On hold"   value={onHold}    total={total} color="#d97706" />
                   <div className="pt-3 border-t border-surface-border flex items-center justify-between">
                     <span className="text-sm text-text-secondary">Overall completion</span>

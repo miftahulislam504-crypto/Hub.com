@@ -84,8 +84,8 @@ export default function RecentActivity({ userId }: Props) {
           <div key={i} className="flex gap-3 animate-pulse">
             <div className="w-8 h-8 rounded-full bg-gray-100 flex-shrink-0" />
             <div className="flex-1 space-y-1.5 py-1">
-              <div className="h-3 bg-gray-100 rounded w-3/4" />
-              <div className="h-2 bg-gray-100 rounded w-1/2" />
+              <div className="h-3 bg-gray-100 rounded-md w-3/4" />
+              <div className="h-2 bg-gray-100 rounded-md w-1/2" />
             </div>
           </div>
         ))}
