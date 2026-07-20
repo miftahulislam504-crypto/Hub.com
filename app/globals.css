@@ -2,26 +2,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /*
- * ══════════════════════════════════════════════════════════════
- * Tailwind v4 migration (v3 → v4)
- * ══════════════════════════════════════════════════════════════
- * আগে এই ফাইলে @tailwind base/components/utilities + একটা আলাদা
- * tailwind.config.ts ছিল (brand-*/surface-*/text-*/status-* স্কেল)।
- * v4-এ config ফাইল নেই — সব টোকেন এখানে CSS custom property হিসেবে
- * @theme ব্লকে সংজ্ঞায়িত। পুরনো v3 config _migration-reference/
- * tailwind.config.ts.v3-backup-এ রাখা আছে রেফারেন্সের জন্য।
+ * ==================================================================
+ * Tailwind v4 migration (v3 -> v4)
+ * ==================================================================
+ * Previously this file had @tailwind base/components/utilities plus
+ * a separate tailwind.config.ts (brand-*/surface-*/text-*/status-*
+ * scales). In v4 there is no config file -- all tokens are defined
+ * here as CSS custom properties inside the @theme block. The old v3
+ * config is kept for reference at
+ * _migration-reference/tailwind.config.ts.v3-backup.
  *
- * রঙ পরিবর্তন: আগে brand-* ছিল নীল স্কেল (#2563eb ইত্যাদি) — এখন
- * grayscale/oklch (PM app তথা CivilOS PM-এর সাথে মিলিয়ে, যেটাই
- * ecosystem-এর নতুন স্থায়ী সিদ্ধান্ত)। ক্লাস নাম (brand-50...900)
- * ইচ্ছাকৃতভাবে অপরিবর্তিত রাখা হয়েছে — শুধু মান বদলেছে, নাম না —
- * যাতে .btn-primary, .nav-item-active ইত্যাদি কোনো component ফাইল
- * স্পর্শ না করেই নতুন রঙে switch হয়ে যায়।
+ * Color change: brand-* used to be a blue scale (#2563eb etc) -- now
+ * it's grayscale/oklch (matching PM app / CivilOS PM, the new
+ * permanent decision for the ecosystem). Class names (brand-50...900)
+ * were deliberately left unchanged -- only the values changed, not
+ * the names -- so .btn-primary, .nav-item-active etc switch to the
+ * new colors without touching any component file.
  *
- * এই ফাইলটা CivilOS Estimating-এর app/globals.css-এর সাথে হুবহু
- * মিলিয়ে রাখা হয়েছে (Estimating-ও একই migration পেয়েছে, একই
- * grayscale token মান)। এখানে বদল আনলে Estimating-এও একসাথে আনা
- * উচিত, নাহলে দুই app এর UI ধীরে ধীরে আলাদা হয়ে যাবে।
+ * This file is kept in sync with CivilOS Estimating's
+ * app/globals.css (Estimating got the same migration, same
+ * grayscale token values). If you change something here, make the
+ * same change in Estimating too, or the two apps' UI will slowly
+ * diverge.
  */
 
 @custom-variant dark (&:is(.dark *));
@@ -29,12 +31,6 @@
 :root {
   --radius: 0.625rem;
 
-  /* ── Brand scale (grayscale/oklch — PM app-এর সাথে মিলিয়ে) ──
-   * PM app-এর --primary: oklch(0.205 0 0) কেন্দ্র করে একটা পূর্ণ
-   * ৫০–৯০০ স্কেল বানানো হয়েছে (PM app নিজে শুধু primary/secondary
-   * রাখে, ৯-ধাপি স্কেল রাখে না — Estimating/Hub-এর brand-50 থেকে
-   * brand-900 পর্যন্ত সব শেড দরকার হয় বলে এই সম্প্রসারণ)। lightness
-   * PM-এর background/muted/foreground-এর সাথে সমানুপাতিক ধাপে। */
   --brand-50: oklch(0.985 0 0);
   --brand-100: oklch(0.97 0 0);
   --brand-200: oklch(0.922 0 0);
@@ -44,7 +40,6 @@
   --brand-800: oklch(0.205 0 0);
   --brand-900: oklch(0.145 0 0);
 
-  /* ── Surface / text (PM app-এর background/card/foreground/muted থেকে) ── */
   --surface: oklch(0.985 0 0);
   --surface-card: oklch(1 0 0);
   --surface-hover: oklch(0.97 0 0);
@@ -53,11 +48,6 @@
   --text-secondary: oklch(0.32 0 0);
   --text-muted: oklch(0.556 0 0);
 
-  /* ── Status colors (grayscale palette-এ ব্যাজ আলাদা করার জন্য
-   * সীমিত hue রাখা হয়েছে — সম্পূর্ণ grayscale করলে active/hold/done
-   * status আলাদা করা যেত না, যেটা ব্যবহারযোগ্যতার জন্য জরুরি। PM
-   * app-এর --success/--warning/--destructive hue-এর সাথে সামঞ্জস্য
-   * রেখে সবচেয়ে কম saturation ব্যবহার করা হয়েছে) ── */
   --status-activeText: oklch(0.45 0.13 145);
   --status-activeBg: oklch(0.96 0.03 145);
   --status-activeBorder: oklch(0.85 0.08 145);
@@ -68,8 +58,6 @@
   --status-doneBg: oklch(0.94 0 0);
   --status-doneBorder: oklch(0.8 0 0);
 
-  /* ── shadcn/ui semantic টোকেন (PM app parity — ভবিষ্যতে shadcn/ui
-   * কম্পোনেন্ট যোগ হলে দরকার হবে) ── */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -173,7 +161,6 @@
 
 @layer components {
 
-  /* ── Buttons ───────────────────────────────────────── */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
            bg-brand-600 hover:bg-brand-700 active:bg-brand-800
@@ -210,7 +197,6 @@
            transition-all duration-150;
   }
 
-  /* ── Inputs ────────────────────────────────────────── */
   .input-field {
     @apply w-full bg-white border border-surface-border
            text-text-primary placeholder-text-muted text-sm
@@ -220,17 +206,14 @@
            focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20;
   }
 
-  /* ── Cards ─────────────────────────────────────────── */
   .card {
     @apply bg-surface-card border border-surface-border rounded-xl shadow-card;
   }
 
-  /* ── Section title ──────────────────────────────────── */
   .section-title {
     @apply flex items-center gap-2 text-sm font-semibold text-text-primary;
   }
 
-  /* ── Status badges ──────────────────────────────────── */
   .badge-active {
     @apply inline-flex items-center gap-1 text-xs font-semibold
            text-status-activeText bg-status-activeBg border border-status-activeBorder
@@ -247,7 +230,6 @@
            px-2 py-0.5 rounded-full;
   }
 
-  /* ── Sidebar nav item ───────────────────────────────── */
   .nav-item {
     @apply flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium
            text-text-secondary hover:text-text-primary hover:bg-surface-hover
@@ -259,26 +241,22 @@
            transition-all duration-150;
   }
 
-  /* ── Table ──────────────────────────────────────────── */
   .table-row {
     @apply flex items-center gap-4 px-5 py-3.5
            border-b border-surface-border last:border-0
            hover:bg-surface-hover transition-colors duration-100;
   }
 
-  /* ── Divider ────────────────────────────────────────── */
   .divider {
     @apply border-t border-surface-border;
   }
 }
 
-/* ── Scrollbar ──────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { @apply bg-surface-border rounded-full; }
 ::-webkit-scrollbar-thumb:hover { @apply bg-text-muted; }
 
-/* ── Spinner ──────────────────────────────────────────── */
 .spinner {
   @apply w-5 h-5 rounded-full border-2 border-surface-border border-t-brand-600 animate-spin;
 }
